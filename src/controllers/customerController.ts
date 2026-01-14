@@ -19,6 +19,29 @@ export class CustomerController {
             return res.status(400).json({ error: "error to create customer" })
         }
     }
+
+    async update(req: Request, res: Response) {
+        try {
+            const { name, familyName, contact, address } = req.body;
+            const { id } = req.params;
+            if (typeof id !== "string") { return res.status(400).json({ error: "invalid ID!" }) }
+            const customer = await prisma.customer.update({
+                where: { id },
+                data: {
+                    name,
+                    familyName,
+                    contact,
+                    address
+                }
+            })
+            return res.status(201).json({ message: "customer updated!", customer })
+        } catch (error) {
+            console.log("detailed error:", error)
+        }
+    }
+
+
+
     async remove(req: Request, res: Response) {
         try {
             const { id } = req.params;

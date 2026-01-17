@@ -7,12 +7,12 @@ export class wishlistController {
             return res.status(400).json({ error: "Invalid or none customer ID" })
         }
         try {
-            const newWishlist = await prisma.wishlist.create({
+            const wishlistData = await prisma.wishlist.create({
                 data: {
                     customerId
                 }
             })
-            return res.status(201).json({ message: "wishlist created!", newWishlist })
+            return res.status(201).json({ wishlistData })
         } catch (error) {
             console.error(error)
             return res.status(400).json({ error: "fail to create wishlist" })

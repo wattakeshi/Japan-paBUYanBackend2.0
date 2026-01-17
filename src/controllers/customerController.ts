@@ -25,7 +25,7 @@ export class CustomerController {
             const { name, familyName, contact, address } = req.body;
             const { id } = req.params;
             if (typeof id !== "string") { return res.status(400).json({ error: "invalid ID!" }) }
-            const customer = await prisma.customer.update({
+            const updatedCustomer = await prisma.customer.update({
                 where: { id },
                 data: {
                     name,
@@ -34,7 +34,7 @@ export class CustomerController {
                     address
                 }
             })
-            return res.status(201).json({ message: "customer updated!", customer })
+            return res.status(201).json({ updatedCustomer })
         } catch (error) {
             console.log("detailed error:", error)
         }
@@ -58,6 +58,20 @@ export class CustomerController {
         } catch (error) {
             console.log("detailed error:", error)
             return res.status(400).json({ error: "error to delete customer" })
+        }
+    }
+
+    async getUser(req: Request, res: Response) {
+        const { id } = req.params;
+        try {
+            if (typeof id !== "string") { return res.status(400).json({ error: "Invalid ID" }) }
+            const user = await prisma.customer.findUnique({
+                where: { id }
+            })
+            return res.status(200).json(user)
+        } catch (error) {
+            console.error(error);
+            return res.status(400).json({ error: "something went wrong" })
         }
     }
 

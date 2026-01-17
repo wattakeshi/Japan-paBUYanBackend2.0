@@ -1,6 +1,7 @@
 import { Router } from "express";
+import { RequestedProductsController } from "../controllers/requestedProductsController.js";
 const requestedProductRoutes = Router();
-requestedProductRoutes.get("/", (req, res) => {
-    res.send("requestedProductRoutes")
-})
+const requestedProductsController = new RequestedProductsController()
+requestedProductRoutes.post("/", requestedProductsController.create)
+requestedProductRoutes.patch("/", requestedProductsController.update)
 export { requestedProductRoutes }

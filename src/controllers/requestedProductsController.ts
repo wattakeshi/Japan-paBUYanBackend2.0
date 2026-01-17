@@ -1,0 +1,56 @@
+import type { Request, Response } from "express";
+import { prisma } from "../lib/prisma.js";
+// model RequestedProduct {
+//   id         String   @id @default(uuid())
+//   name       String
+//   details    String?
+//   qty        Int      @default(1)
+//   status     String   @default("unseen")
+//   wishlistId String
+//   wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
+
+//   @@map("requestedproducts")
+// }
+export class RequestedProductsController {
+    async create(req: Request, res: Response) {
+        const { productlist } = req.body;
+        if (!Array.isArray(productlist) || productlist.length === 0) {
+            return res.status(400).json({ error: "The products list must be a non-empty array." });
+        }
+
+        try {
+            const formattedProducts = productlist.map((p: any) => ({
+                name: String(p.name),
+                details: p.details || "",
+                qty: Number(p.qty) || 1,
+                wishlistId: String(p.wishlistId),
+                status: "unseen"
+            }));
+
+            const newProduct = await prisma.requestedProduct.createMany({
+                data:
+                    formattedProducts
+            })
+
+            return res.status(200).json({ message: "success creating products!", newProduct })
+        } catch (error) {
+            console.error(error);
+            return res.status(400).json({ error: "fail to create products" })
+        }
+    }
+    async update(req: Request, res: Response) {
+        const { status } = req.body;
+        const { id } = req.params;
+        if (typeof id !== "string" || !id) { return res.status(400).json("Invalid ID") }
+        try {
+            const change = await prisma.requestedProduct.update({
+                where: { id },
+                data: { status: status }
+            })
+            res.status(200).json({ message: "success updating product" })
+        } catch (error) {
+            console.error(error);
+            return res.status(400).json({ error: "fail to update product" })
+        }
+    }
+} 

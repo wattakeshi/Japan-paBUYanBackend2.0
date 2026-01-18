@@ -1,9 +1,8 @@
 import type { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
-const prisma = new PrismaClient();
+import { prisma } from '../lib/prisma.js';
 
 export class AdminController {
     async login(req: Request, res: Response) {
@@ -40,4 +39,5 @@ export class AdminController {
             return res.status(400).json({ error: "Internal server error" });
         }
     }
+
 }

@@ -29,7 +29,7 @@ model Wishlist {
   id                String             @id @default(uuid())
   status            String             @default("pending")
   customerId        String
-  customer          Customer           @relation(fields: [customerId], references: [id])
+  customer          Customer           @relation(fields: [customerId], references: [id], onDelete: Cascade)
   requestedProducts RequestedProduct[]
   createdAt         DateTime           @default(now())
 
@@ -43,7 +43,7 @@ model RequestedProduct {
   qty        Int      @default(1)
   status     String   @default("unseen")
   wishlistId String
-  wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
 
   @@map("requestedproducts")
 }
@@ -55,4 +55,10 @@ model FacebookPost {
   createdAt DateTime @default(now())
 
   @@map("facebookposts")
+}
+
+model Admin {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
 }

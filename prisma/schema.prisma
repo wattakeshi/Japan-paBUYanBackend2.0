@@ -20,6 +20,7 @@ model Customer {
   familyName String
   contact    String
   address    String
+  active     Boolean    @default(true)
   wishlists  Wishlist[]
 
   @@map("customers")
@@ -40,6 +41,8 @@ model RequestedProduct {
   id         String   @id @default(uuid())
   name       String
   details    String?
+  costPrice  Float    @default(0)
+  salePrice  Float    @default(0)
   qty        Int      @default(1)
   status     String   @default("unseen")
   wishlistId String

@@ -11,6 +11,7 @@ import { prisma } from "../lib/prisma.js";
 
 //   @@map("requestedproducts")
 // }
+
 export class RequestedProductsController {
     async create(req: Request, res: Response) {
         const { productlist } = req.body;
@@ -51,6 +52,27 @@ export class RequestedProductsController {
         } catch (error) {
             console.error(error);
             return res.status(400).json({ error: "fail to update product" })
+        }
+    }
+
+    async updateProduct(req: Request, res: Response) {
+        const { id } = req.params;
+        if (typeof id !== "string") { return res.status(400).json({ error: "Invalid ID!" }) }
+        const { status, costPrice, salePrice, quantity } = req.body;
+
+        try {
+            const updated = await prisma.requestedProduct.update({
+                where: { id },
+                data: {
+                    status,
+                    costPrice: Number(costPrice),
+                    salePrice: Number(salePrice),
+                    qty: Number(quantity)
+                }
+            });
+            return res.json(updated);
+        } catch (error) {
+            return res.status(400).json({ error: "Erro ao atualizar produto" });
         }
     }
 } 

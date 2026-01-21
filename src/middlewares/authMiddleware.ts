@@ -19,7 +19,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
         res.status(401).json({ error: "Token malformatted" });
         return;
     }
-    const secret: string = process.env.JWT_SECRET || "default_secret_key";
+    const secret: string = process.env.JWT_SECRET as string;
     if (!secret) {
         throw new Error("JWT_SECRET is not defined in environment variables");
     }

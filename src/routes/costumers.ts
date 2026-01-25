@@ -4,7 +4,6 @@ const customerRoutes = Router();
 const customerController = new CustomerController()
 customerRoutes.get("/:id", customerController.getUser)
 customerRoutes.post("/", customerController.create)
-customerRoutes.patch("/:id", customerController.update)
-customerRoutes.put("/:id", customerController.update)
 customerRoutes.patch("/:id", customerController.remove)
+customerRoutes.put("/:id", customerController.update)
 export { customerRoutes }

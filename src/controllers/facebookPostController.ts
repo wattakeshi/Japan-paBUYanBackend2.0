@@ -4,7 +4,9 @@ import { prisma } from "../lib/prisma.js"
 export class facebookPostController {
     async getAll(req: Request, res: Response) {
         try {
-            const posts = await prisma.facebookPost.findMany()
+            const posts = await prisma.facebookPost.findMany({
+                orderBy: { createdAt: "desc" }
+            })
             res.status(201).json({ posts })
         } catch (error) {
             return res.status(400).json({ error: "failure" })

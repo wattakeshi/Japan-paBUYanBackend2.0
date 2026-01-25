@@ -61,18 +61,32 @@ export class RequestedProductsController {
         const { status, costPrice, salePrice, quantity } = req.body;
 
         try {
+            const updateData: any = {};
+
+            if (status) updateData.status = status;
+
+            if (costPrice !== undefined) updateData.costPrice = Number(costPrice);
+            if (salePrice !== undefined) updateData.salePrice = Number(salePrice);
+            if (quantity !== undefined) updateData.qty = Number(quantity);
+
             const updated = await prisma.requestedProduct.update({
                 where: { id },
-                data: {
-                    status,
-                    costPrice: Number(costPrice),
-                    salePrice: Number(salePrice),
-                    qty: Number(quantity)
-                }
+                data: updateData
             });
+
             return res.json(updated);
         } catch (error) {
-            return res.status(400).json({ error: "Erro ao atualizar produto" });
+            console.error("Erro Prisma:", error);
+            return res.status(400).json({ error: "Erro ao atualizar produto. Verifique se os campos existem no banco." });
+        }
+    }
+
+    async getAllProducts(req: Request, res: Response) {
+        try {
+            const products = await prisma.requestedProduct.findMany();
+            return res.json(products);
+        } catch (error) {
+            return res.status(400).json({ error: "Erro ao buscar produtos" });
         }
     }
 } 

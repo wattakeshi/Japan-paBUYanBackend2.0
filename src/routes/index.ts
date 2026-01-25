@@ -20,5 +20,6 @@ router.use("/admin", AdminRouter);
 router.get('/admin/wishlists', authMiddleware, WishlistController.getAdminDashboard);
 router.patch('/admin/wishlists/:id', authMiddleware, WishlistController.updateWishlistStatus);
 router.patch('/admin/products/:id', authMiddleware, requestedProductController.updateProduct);
+router.get('/admin/products/:id', authMiddleware, requestedProductController.getAllProducts);
 
 export { router };

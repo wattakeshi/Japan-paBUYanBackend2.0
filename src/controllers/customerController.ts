@@ -45,13 +45,17 @@ export class CustomerController {
     async remove(req: Request, res: Response) {
         try {
             const { id } = req.params;
+            const { active } = req.body;
             if (typeof id !== "string") {
                 return res.status(400).json({ message: "invalid ID format!" })
             }
-            await prisma.customer.delete({
+            await prisma.customer.update({
                 where: {
                     id: id
 
+                },
+                data: {
+                    active: active
                 }
             })
             return res.status(200).json({ message: "customer deleted!" })

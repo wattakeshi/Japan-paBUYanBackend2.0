@@ -21,7 +21,7 @@ export class AdminController {
             if (!passwordMatch) {
                 return res.status(401).json({ error: "Invalid email or password" });
             }
-            const secret = process.env.JWT_SECRET as string || "default_secret_key";
+            const secret = process.env.JWT_SECRET as string;
             const token = jwt.sign(
                 { id: admin.id },
                 secret

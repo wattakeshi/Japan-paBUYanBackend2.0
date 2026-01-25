@@ -4,8 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch src/app.ts"
+    "dev": "tsx watch src/server.ts",
+    "build": "echo 'No build needed for tsx'",
+    "start": "npx tsx src/server.ts"
   },
   "keywords": [],
   "author": "",

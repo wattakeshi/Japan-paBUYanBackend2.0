@@ -1,5 +1,17 @@
 import type { Request, Response } from "express"
 import { prisma } from "../lib/prisma.js"
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || "smtp.gmail.com",
+    port: Number(process.env.SMTP_PORT) || 465,
+    secure: true,
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+    },
+});
+
 export class wishlistController {
     async create(req: Request, res: Response) {
         const { customerId } = req.body;
@@ -11,7 +23,21 @@ export class wishlistController {
                 data: {
                     customerId
                 }
-            })
+            });
+            try {
+                await transporter.sendMail({
+                    from: `"PaBUYan System" <${process.env.SMTP_USER}>`,
+                    to: process.env.PABUYAN_OWNER_EMAIL,
+                    subject: "New Wishlist sent!",
+                    text: `A new wishlist was created!. ID: ${wishlistData.id}`,
+                    html: `<p>You have a new wishlist to check!. ID: <strong>${wishlistData.id}</strong></p>`
+                });
+                console.log("E-mail de notificação enviado!");
+            } catch (mailError) {
+                console.error("Erro ao enviar e-mail, mas a wishlist foi criada:", mailError);
+            }
+
+
             return res.status(201).json({ wishlistData })
         } catch (error) {
             console.error(error)

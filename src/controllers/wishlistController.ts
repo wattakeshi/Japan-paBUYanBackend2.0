@@ -1,6 +1,6 @@
 import type { Request, Response } from "express"
 import { prisma } from "../lib/prisma.js"
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";;
 
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || "smtp.gmail.com",

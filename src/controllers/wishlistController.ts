@@ -29,7 +29,7 @@ export class wishlistController {
                 }
             });
             try {
-                transporter.sendMail({
+                await transporter.sendMail({
                     from: `"PaBUYan System" <${process.env.SMTP_USER}>`,
                     to: process.env.PABUYAN_OWNER_EMAIL,
                     subject: "New Wishlist sent!",
